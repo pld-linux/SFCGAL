@@ -1,26 +1,32 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# API documentation
+%bcond_without	eigen		# Eigen support for advanced simplification strategies
 %bcond_without	osg		# OpenSceneGraph support
 #
 Summary:	C++ wrapper around CGAL library
 Summary(pl.UTF-8):	Obudowanie C++ do biblioteki CGAL
 Name:		SFCGAL
-Version:	2.2.0
+Version:	2.3.0
 Release:	1
 License:	LGPL v2.0+
 Group:		Libraries
 #Source0Download: https://gitlab.com/sfcgal/SFCGAL/-/releases
 Source0:	https://gitlab.com/sfcgal/SFCGAL/-/archive/v%{version}/%{name}-v%{version}.tar.bz2
-# Source0-md5:	ef0a4397a6f5bf06299c6c8c5ab77f62
+# Source0-md5:	f0ad3af646c6913902775381a4080b79
+Patch0:		%{name}-osg-syntax.patch
 URL:		https://sfcgal.gitlab.io/SFCGAL
+# minimum is 5.6, more features up to 6.1, build fails with 6.2
+BuildRequires:	CGAL-devel >= 6.2.1
 # osgDB osgUtil
 %{?with_osg:BuildRequires:	OpenSceneGraph-devel}
 # thread system serialization %{?with_osg: chrono unit_test_framework filesystem program_options timer}
-BuildRequires:	boost-devel
-BuildRequires:	cmake >= 3.6
+BuildRequires:	boost-devel >= 1.69.0
+BuildRequires:	cmake >= 3.16
 %{?with_apidocs:BuildRequires:	doxygen}
+%{?with_eigen:BuildRequires:	eigen3 >= 3.3}
 BuildRequires:	libstdc++-devel >= 6:7
+BuildRequires:	nlohmann-json-devel >= 3.11
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -38,8 +44,10 @@ Summary:	Header files for SFCGAL library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki SFCGAL
 Group:		Development/Libraries
 Requires:	%{name}%{?_isa} = %{version}-%{release}
-Requires:	boost-devel
+Requires:	CGAL-devel >= 6.2.1
+Requires:	boost-devel >= 1.69.0
 Requires:	libstdc++-devel >= 6:7
+Requires:	nlohmann-json-devel >= 3.11
 
 %description devel
 Header files for SFCGAL library.
@@ -87,12 +95,14 @@ Dokumentacja API biblioteki SFCGAL.
 
 %prep
 %setup -q -n %{name}-v%{version}
+%patch -P0 -p1
 
 %build
 install -d build
 cd build
 %cmake .. \
 	%{?with_apidocs:-DSFCGAL_BUILD_DOC=ON} \
+	%{?with_eigen:-DSFCGAL_WITH_EIGEN=ON} \
 	%{?with_osg:-DSFCGAL_WITH_OSG=ON}
 
 %{__make}

@@ -1,0 +1,22 @@
+--- SFCGAL-v2.3.0/src/detail/io/OsgFactory.h.orig	2026-06-12 16:38:51.000000000 +0200
++++ SFCGAL-v2.3.0/src/detail/io/OsgFactory.h	2026-10-14 17:50:25.381372210 +0200
+@@ -115,7 +115,6 @@ protected:
+ };
+ 
+ } // namespace io
+-} // namespace detail
+-} // namespace SFCGAL
++} // namespace SFCGAL::detail
+ 
+ #endif
+--- SFCGAL-v2.3.0/src/detail/io/OsgFactory.cpp.orig	2026-06-12 16:38:51.000000000 +0200
++++ SFCGAL-v2.3.0/src/detail/io/OsgFactory.cpp	2026-10-14 17:56:44.462651884 +0200
+@@ -223,7 +223,6 @@ OsgFactory::createVertex(osg::Vec3Array
+ }
+ 
+ } // namespace io
+-} // namespace detail
+-} // namespace SFCGAL
++} // namespace SFCGAL::detail
+ 
+ #endif // SFCGAL_WITH_OSG
