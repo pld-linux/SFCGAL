@@ -8,7 +8,7 @@ Summary:	C++ wrapper around CGAL library
 Summary(pl.UTF-8):	Obudowanie C++ do biblioteki CGAL
 Name:		SFCGAL
 Version:	2.3.0
-Release:	1
+Release:	2
 License:	LGPL v2.0+
 Group:		Libraries
 #Source0Download: https://gitlab.com/sfcgal/SFCGAL/-/releases
